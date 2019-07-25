@@ -4,8 +4,9 @@ module.exports = {
     node: true,
   },
   extends: [
-    'plugin:vue/essential',
+    'plugin:vue/recommended',
     '@vue/airbnb',
+    'plugin:vue-a11y/recommended'
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -14,4 +15,7 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
+  plugins: [
+    "vue-a11y"
+  ]
 };
