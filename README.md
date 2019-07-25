@@ -1,3 +1,5 @@
+YAEMA - Yet another eve market App
+
 # yaemapp
 
 ## Project setup
