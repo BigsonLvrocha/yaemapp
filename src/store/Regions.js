@@ -1,5 +1,5 @@
 import * as AsyncMixins from './mixin/Async';
-import { fetchRegionData } from '@/services/esi';
+import EsiService from '@/services/api';
 
 export default {
   namespaced: true,
@@ -26,9 +26,31 @@ export default {
   },
   actions: {
     ...AsyncMixins.Actions,
-    async fetchData({ dispatch, commit }) {
-      const data = await dispatch('sendRequest', { callback: fetchRegionData });
-      commit('SET_DATA', { data });
+    async fetchRegionIds({ commit }) {
+      try {
+        commit('SET_IS_LOADING');
+        const { data: ids } = await EsiService.get('/universe/regions');
+        return ids;
+      } catch (err) {
+        commit('ADD_ERROR', err, { root: true });
+        throw err;
+      } finally {
+        commit('CLEAR_IS_LOADING');
+      }
+    },
+    async fetchRegionData({ dispatch, commit }) {
+      try {
+        commit('SET_IS_LOADING');
+        const ids = await dispatch('fetchRegionIds');
+        const responses = await Promise.all(ids.map(id => EsiService.get(`/universe/regions/${id}`)));
+        const data = responses.map(item => item.data);
+        commit('SET_DATA', { data });
+      } catch (err) {
+        commit('ADD_ERROR', err, { root: true });
+        throw err;
+      } finally {
+        commit('CLEAR_IS_LOADING');
+      }
     },
   },
 };
