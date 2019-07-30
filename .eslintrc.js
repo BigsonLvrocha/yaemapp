@@ -32,7 +32,8 @@ module.exports = {
       ts: 'never',
       tsx: 'never',
       vue: 'never'
-    }]
+    }],
+    'import/prefer-default-export': 'never'
   },
   parserOptions: {
     parser: 'babel-eslint',
