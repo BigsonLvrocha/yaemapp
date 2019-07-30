@@ -12,6 +12,7 @@ export default new VuexPersist({
     },
     Types: {
       data: state.Types.data,
+      blacklist: state.Types.blacklist,
     },
   }),
   filter: ({ type }) => {
