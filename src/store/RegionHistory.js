@@ -85,15 +85,15 @@ export default {
         }
         commit('SET_FETCH_TOTAL', types.length);
         const regionTypesHistoryData = [];
-        const totalFetches = Math.floor((types.length - 1) / 200) + 1;
+        const totalFetches = Math.floor((types.length - 1) / 100) + 1;
         for (let i = 0; i < totalFetches; i += 1) {
-          const roundTypes = types.slice(i * 200, ((i + 1) * 200));
+          const roundTypes = types.slice(i * 100, ((i + 1) * 100));
           const requests = roundTypes.map(typeId => dispatch('fetchItemHistoryData', {
             regionId, typeId,
           }));
           // eslint-disable-next-line no-await-in-loop
           const results = await Promise.all(requests);
-          commit('SET_FETCHED', Math.min((i + 1) * 200, types.length));
+          commit('SET_FETCHED', Math.min((i + 1) * 100, types.length));
           regionTypesHistoryData.push(...results);
         }
         commit('SET_REGION_TYPES', { types: regionTypesHistoryData.filter(item => item !== null && item.hist7.averageIskVolume > 100000000), regionId });
