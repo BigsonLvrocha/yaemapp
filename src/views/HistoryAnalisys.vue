@@ -8,9 +8,17 @@
       item-value="region_id"
       item-text="name"
     />
-    <v-list>
+    <v-btn
+      v-if="currentRegion"
+      @click="() => fetchRegionHistoryData({ regionId: currentRegion })"
+      color="primary"
+    >
+      Reload types
+    </v-btn>
+    <!--
+    <v-list class="mt-2">
       <v-list-item
-        v-for="type in currentRegionTypes"
+        v-for="type in currentRegionHistoryData"
         :key="type"
       >
         <v-list-item-content>
@@ -20,6 +28,7 @@
         </v-list-item-content>
       </v-list-item>
     </v-list>
+    -->
   </v-content>
 </template>
 
@@ -37,27 +46,58 @@ export default {
       regions: 'data',
     }),
     ...mapState('RegionHistory', {
-      regionTypes: 'data',
+      regionHistoryData: 'data',
     }),
-    currentRegionTypes() {
+    currentRegionHistoryData() {
       if (this.currentRegion === null) {
         return [];
       }
-      const regionTypes = this.regionTypes.find(region => region.regionId === this.currentRegion);
+      const regionTypes = this.regionHistoryData
+        .find(region => region.regionId === this.currentRegion);
       if (!regionTypes) {
         return [];
       }
-      return regionTypes.types;
+      return regionTypes.types.slice().sort(
+        (a, b) => b.hist30.averageIskVolume - a.hist30.averageIskVolume,
+      );
+    },
+    currentRegionHistoryDataByAmount() {
+      if (this.currentRegion === null || this.currentRegionHistoryData.length === 0) {
+        return [];
+      }
+      const sections = [];
+      const maxAverageIskVolume = this.currentRegionHistoryData[0].hist30.averageIskVolume;
+      for (
+        let magnetude = Math.ceil(Math.log10(maxAverageIskVolume));
+        magnetude > 6;
+        magnetude -= 1
+      ) {
+        for (let i = 10; i > 1; i -= 1) {
+          const types = this.currentRegionHistoryData.filter(
+            item => (i - 1) * (10 ** magnetude) < item.hist30.averageIskVolume
+              && item.hist30.averageIskVolume < i * (10 ** magnetude),
+          );
+          if (types.length > 0) {
+            sections.push({
+              max: i * (10 ** magnetude),
+              min: (i - 1) * (10 ** magnetude),
+              types,
+            });
+          }
+        }
+      }
+      return sections;
     },
   },
   methods: {
     ...mapActions('RegionHistory', [
-      'fetchRegionHistoryTypes',
+      'fetchRegionHistoryData',
     ]),
     handleRegionSelect(regionId) {
-      const regionTypes = this.regionTypes.find(region => region.regionId === this.currentRegion);
-      if (!regionTypes) {
-        this.fetchRegionHistoryTypes({ regionId });
+      const regionHistoryData = this.regionHistoryData
+        .find(region => region.regionId === this.currentRegion);
+      if (!regionHistoryData) {
+        this.fetchRegionHistoryData({ regionId });
       }
     },
   },
