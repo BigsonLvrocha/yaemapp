@@ -39,8 +39,9 @@ export default {
     },
     async fetchTypeIdArrayData({ commit, dispatch }, { typeIds }) {
       try {
+        commit('SET_IS_LOADING');
         console.log(`fetching data for ${typeIds.length} types`);
-        if (typeIds.length > 0) {
+        if (typeIds.length === 0) {
           return;
         }
         const totalFetches = Math.floor((typeIds.length - 1) / 200) + 1;
