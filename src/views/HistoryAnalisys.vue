@@ -21,7 +21,10 @@
             Reload types
           </v-btn>
         </v-flex>
-        <v-flex v-if="fetchTotal > 0">
+        <v-flex
+          v-if="fetchTotal > 0"
+          mt-3
+        >
           Loading data... {{ fetched }}/{{ fetchTotal }}
         </v-flex>
         <v-flex>
@@ -29,6 +32,9 @@
             v-if="fetchTotal > 0"
             :value="fetched / fetchTotal * 100"
           />
+        </v-flex>
+        <v-flex v-if="currentRegion !== null">
+          <v-subheader>Last fetch: {{ currentRegionLastFetch }}</v-subheader>
         </v-flex>
         <v-flex>
           <v-expansion-panels
@@ -40,7 +46,9 @@
               :key="regionHistoryData.min"
             >
               <v-expansion-panel-header>
-                {{ regionHistoryData.min / 1000000 }} M - {{ regionHistoryData.max / 1000000 }} M
+                {{ (regionHistoryData.min / 1000000).toLocaleString() }} M -
+                {{ (regionHistoryData.max / 1000000).toLocaleString() }} M
+                ({{ regionHistoryData.types.length }} items)
               </v-expansion-panel-header>
               <v-expansion-panel-content>
                 <ItemHistoryDataView :regionData="regionHistoryData" />
@@ -56,6 +64,7 @@
 <script>
 // @ is an alias to /src
 import { mapState, mapActions } from 'vuex';
+import { formatDistance } from 'date-fns';
 import ItemHistoryDataView from '@/components/ItemHistoryDataView';
 
 export default {
@@ -114,6 +123,17 @@ export default {
         }
       }
       return sections;
+    },
+    currentRegionLastFetch() {
+      if (this.currentRegion === null) {
+        return null;
+      }
+      const regionTypes = this.regionHistoryData
+        .find(region => region.regionId === this.currentRegion);
+      if (!regionTypes) {
+        return null;
+      }
+      return formatDistance(regionTypes.updatedAt, Date.now(), { addSuffix: true });
     },
   },
   methods: {
