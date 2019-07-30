@@ -28,7 +28,7 @@ export default new Vuex.Store({
         state[propertyName] = mergedState[propertyName];
       }
       if (!state.storeReady) {
-        state.storeReady = false;
+        state.storeReady = true;
         EventBus.$emit('storage-ready');
       }
     },
