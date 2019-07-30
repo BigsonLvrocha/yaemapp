@@ -102,7 +102,11 @@ export default {
           ...details,
         };
       } catch (error) {
-        commit('ADD_ERROR', { error }, { root: true });
+        if (error.response.status === 404) {
+          commit('Types/ADD_BLACKLIST_TYPE_ID', { typeId });
+        } else {
+          commit('ADD_ERROR', { error }, { root: true });
+        }
         return null;
       } finally {
         commit('CLEAR_IS_LOADING');
