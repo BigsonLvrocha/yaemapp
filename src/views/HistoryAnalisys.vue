@@ -1,46 +1,55 @@
 <template>
   <v-content class="home">
-    <v-select
-      v-model="currentRegion"
-      :items="regions"
-      :return-object="false"
-      @change="handleRegionSelect"
-      item-value="region_id"
-      item-text="name"
-    />
-    <v-btn
-      v-if="currentRegion"
-      @click="() => fetchRegionHistoryData({ regionId: currentRegion })"
-      color="primary"
-    >
-      Reload types
-    </v-btn>
-    <v-expansion-panels
-      class="mt-3"
-      multiple
-    >
-      <v-expansion-panel
-        v-for="regionHistoryData in currentRegionHistoryDataByAmount"
-        :key="regionHistoryData.min"
-      >
-        <v-expansion-panel-header>
-          {{ regionHistoryData.min / 1000000 }} M - {{ regionHistoryData.max / 1000000 }} M
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <ItemHistoryDataView :regionData="regionHistoryData" />
-          <!--
-          <v-list>
-            <v-list-item
-              v-for="type in regionHistoryData.types"
-              :key="type.typeId"
+    <v-container>
+      <v-layout column>
+        <v-flex>
+          <v-select
+            v-model="currentRegion"
+            :items="regions"
+            :return-object="false"
+            @change="handleRegionSelect"
+            item-value="region_id"
+            item-text="name"
+          />
+        </v-flex>
+        <v-flex>
+          <v-btn
+            v-if="currentRegion"
+            @click="() => fetchRegionHistoryData({ regionId: currentRegion })"
+            color="primary"
+          >
+            Reload types
+          </v-btn>
+        </v-flex>
+        <v-flex v-if="fetchTotal > 0">
+          Loading data... {{ fetched }}/{{ fetchTotal }}
+        </v-flex>
+        <v-flex>
+          <v-progress-linear
+            v-if="fetchTotal > 0"
+            :value="fetched / fetchTotal * 100"
+          />
+        </v-flex>
+        <v-flex>
+          <v-expansion-panels
+            class="mt-3"
+            multiple
+          >
+            <v-expansion-panel
+              v-for="regionHistoryData in currentRegionHistoryDataByAmount"
+              :key="regionHistoryData.min"
             >
-              <v-list-item-title>{{ type.typeId }}</v-list-item-title>
-            </v-list-item>
-          </v-list>
-          -->
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+              <v-expansion-panel-header>
+                {{ regionHistoryData.min / 1000000 }} M - {{ regionHistoryData.max / 1000000 }} M
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <ItemHistoryDataView :regionData="regionHistoryData" />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-flex>
+      </v-layout>
+    </v-container>
   </v-content>
 </template>
 
@@ -63,6 +72,8 @@ export default {
     }),
     ...mapState('RegionHistory', {
       regionHistoryData: 'data',
+      fetched: 'fetched',
+      fetchTotal: 'fetchTotal',
     }),
     currentRegionHistoryData() {
       if (this.currentRegion === null) {
