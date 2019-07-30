@@ -80,7 +80,7 @@ export default {
           const results = await Promise.all(requests);
           regionTypesHistoryData.push(...results);
         }
-        commit('SET_REGION_TYPES', { types: regionTypesHistoryData.filter(item => item !== null && item.hist7.averageIskVolume > 1000000), regionId });
+        commit('SET_REGION_TYPES', { types: regionTypesHistoryData.filter(item => item !== null && item.hist7.averageIskVolume > 100000000), regionId });
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
         throw error;
