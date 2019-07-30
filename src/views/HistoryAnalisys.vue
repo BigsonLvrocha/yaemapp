@@ -27,6 +27,8 @@
           {{ regionHistoryData.min / 1000000 }} M - {{ regionHistoryData.max / 1000000 }} M
         </v-expansion-panel-header>
         <v-expansion-panel-content>
+          <ItemHistoryDataView :regionData="regionHistoryData" />
+          <!--
           <v-list>
             <v-list-item
               v-for="type in regionHistoryData.types"
@@ -35,6 +37,7 @@
               <v-list-item-title>{{ type.typeId }}</v-list-item-title>
             </v-list-item>
           </v-list>
+          -->
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -44,9 +47,13 @@
 <script>
 // @ is an alias to /src
 import { mapState, mapActions } from 'vuex';
+import ItemHistoryDataView from '@/components/ItemHistoryDataView';
 
 export default {
   name: 'Home',
+  components: {
+    ItemHistoryDataView,
+  },
   data() {
     return { currentRegion: null };
   },
