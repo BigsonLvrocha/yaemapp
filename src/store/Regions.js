@@ -31,9 +31,9 @@ export default {
         commit('SET_IS_LOADING');
         const { data: ids } = await EsiService.get('/universe/regions');
         return ids;
-      } catch (err) {
-        commit('ADD_ERROR', err, { root: true });
-        throw err;
+      } catch (error) {
+        commit('ADD_ERROR', { error }, { root: true });
+        throw error;
       } finally {
         commit('CLEAR_IS_LOADING');
       }
@@ -45,9 +45,9 @@ export default {
         const responses = await Promise.all(ids.map(id => EsiService.get(`/universe/regions/${id}`)));
         const data = responses.map(item => item.data);
         commit('SET_DATA', { data });
-      } catch (err) {
-        commit('ADD_ERROR', err, { root: true });
-        throw err;
+      } catch (error) {
+        commit('ADD_ERROR', { error }, { root: true });
+        throw error;
       } finally {
         commit('CLEAR_IS_LOADING');
       }
