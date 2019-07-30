@@ -34,8 +34,12 @@ export default {
         const { data: type } = await api.get(`/universe/types/${typeId}`);
         commit('ADD_TYPE', { type });
         return type;
-      } catch (e) {
-        commit('ADD_ERROR', e, { root: true });
+      } catch (error) {
+        if (error.response.status === 404) {
+          commit('ADD_BLACKLIST_TYPE', { typeId });
+        } else {
+          commit('ADD_ERROR', { error }, { root: true });
+        }
         return null;
       } finally {
         commit('CLEAR_IS_LOADING');
