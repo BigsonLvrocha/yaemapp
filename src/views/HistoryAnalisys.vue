@@ -15,20 +15,29 @@
     >
       Reload types
     </v-btn>
-    <!--
-    <v-list class="mt-2">
-      <v-list-item
-        v-for="type in currentRegionHistoryData"
-        :key="type"
+    <v-expansion-panels
+      class="mt-3"
+      multiple
+    >
+      <v-expansion-panel
+        v-for="regionHistoryData in currentRegionHistoryDataByAmount"
+        :key="regionHistoryData.min"
       >
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ type }}
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-    -->
+        <v-expansion-panel-header>
+          {{ regionHistoryData.min / 1000000 }} M - {{ regionHistoryData.max / 1000000 }} M
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <v-list>
+            <v-list-item
+              v-for="type in regionHistoryData.types"
+              :key="type.typeId"
+            >
+              <v-list-item-title>{{ type.typeId }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </v-content>
 </template>
 
