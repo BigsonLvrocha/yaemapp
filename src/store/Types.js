@@ -35,8 +35,8 @@ export default {
         commit('ADD_TYPE', { type });
         return type;
       } catch (error) {
-        if (error.response.status === 404) {
-          commit('ADD_BLACKLIST_TYPE', { typeId });
+        if (error.response && error.response.status === 404) {
+          commit('ADD_BLACKLIST_TYPE', { typeId }, { root: true });
         } else {
           commit('ADD_ERROR', { error }, { root: true });
         }
@@ -48,7 +48,6 @@ export default {
     async fetchTypeIdArrayData({ commit, dispatch }, { typeIds }) {
       try {
         commit('SET_IS_LOADING');
-        console.log(`fetching data for ${typeIds.length} types`);
         if (typeIds.length === 0) {
           return;
         }
