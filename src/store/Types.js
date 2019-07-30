@@ -51,9 +51,9 @@ export default {
         if (typeIds.length === 0) {
           return;
         }
-        const totalFetches = Math.floor((typeIds.length - 1) / 200) + 1;
+        const totalFetches = Math.floor((typeIds.length - 1) / 100) + 1;
         for (let i = 0; i < totalFetches; i += 1) {
-          const roundTypes = typeIds.slice(i * 200, ((i + 1) * 200));
+          const roundTypes = typeIds.slice(i * 100, ((i + 1) * 100));
           const requests = roundTypes.map(typeId => dispatch('fetchTypeIdData', {
             typeId,
           }));
