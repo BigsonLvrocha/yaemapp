@@ -4,8 +4,9 @@
       v-for="(type, index) in regionData.types"
       :key="type.typeId"
     >
-      <v-list-item-title>{{ type.typeId }}</v-list-item-title>
-      <v-list-item-subtitle>{{ !!typesInfo[index] && typesInfo[index].name }}</v-list-item-subtitle>
+      <v-list-item-title>
+        {{ typesInfo[index] === undefined ? 'Loading...' : typesInfo[index].name }}
+      </v-list-item-title>
     </v-list-item>
   </v-list>
 </template>
