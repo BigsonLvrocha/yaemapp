@@ -7,6 +7,7 @@ export default {
     return {
       ...AsyncMixin.initState(),
       data: [],
+      blacklist: [],
     };
   },
   getters: {
@@ -16,6 +17,9 @@ export default {
     ...AsyncMixin.Mutations,
     ADD_TYPE(state, { type }) {
       state.data.push(type);
+    },
+    ADD_BLACKLIST_TYPE_ID(state, { typeId }) {
+      state.blacklist.push(typeId);
     },
   },
   actions: {
