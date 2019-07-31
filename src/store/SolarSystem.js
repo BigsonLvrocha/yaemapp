@@ -20,7 +20,7 @@ export default {
   },
   actions: {
     async fetchSystemData({ commit, state }, { systemId }) {
-      const inData = state.data.find(a => a.sytem_id === systemId);
+      const inData = state.data.find(a => a.system_id === systemId);
       if (inData) {
         return inData;
       }
