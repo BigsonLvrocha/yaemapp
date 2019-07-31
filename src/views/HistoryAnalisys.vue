@@ -7,7 +7,7 @@
         @click="() => fetchRegionHistoryData({ regionId: currentRegion })"
         color="primary"
       >
-        Reload types
+        Reload information
       </v-btn>
     </v-flex>
     <v-flex
@@ -40,7 +40,7 @@
             ({{ regionHistoryData.types.length }} items)
           </v-expansion-panel-header>
           <v-expansion-panel-content>
-            <ItemHistoryDataView :regionData="regionHistoryData" />
+            <IskVolumeGroupDetails :regionData="regionHistoryData" />
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -58,13 +58,13 @@
 // @ is an alias to /src
 import { mapState, mapActions } from 'vuex';
 import { formatDistance } from 'date-fns';
-import ItemHistoryDataView from '@/components/ItemHistoryDataView';
+import IskVolumeGroupDetails from '@/components/IskVolumeGroupDetails';
 import StationSelect from '@/components/StationSelect';
 
 export default {
   name: 'Home',
   components: {
-    ItemHistoryDataView,
+    IskVolumeGroupDetails,
     StationSelect,
   },
   computed: {
