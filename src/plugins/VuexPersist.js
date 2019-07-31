@@ -17,6 +17,9 @@ export default new VuexPersist({
     Constellation: {
       data: state.Constellation.data,
     },
+    SolarSystem: {
+      data: state.SolarSystem.data,
+    },
   }),
   filter: ({ type }) => {
     if (type.match(/IS_LOADING$/)) {
