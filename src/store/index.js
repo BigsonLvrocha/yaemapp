@@ -3,6 +3,7 @@ import Types from './Types';
 import Regions from './Regions';
 import RegionHistory from './RegionHistory';
 import Constelation from './Constelation';
+import StationSelect from './StationSelect';
 
 
 export default {
@@ -11,4 +12,5 @@ export default {
   Types,
   Regions,
   Constelation,
+  StationSelect,
 };
