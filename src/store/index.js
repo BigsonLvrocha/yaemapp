@@ -5,6 +5,7 @@ import RegionHistory from './RegionHistory';
 import Constellation from './Constellation';
 import StationSelect from './StationSelect';
 import SolarSystem from './SolarSystem';
+import Station from './Station';
 
 
 export default {
@@ -15,4 +16,5 @@ export default {
   Constellation,
   StationSelect,
   SolarSystem,
+  Station,
 };
