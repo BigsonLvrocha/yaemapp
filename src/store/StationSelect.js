@@ -10,7 +10,7 @@ export default {
   },
   getters: {
     region(state, getters, rootState) {
-      if (state.regionId) {
+      if (state.regionId === null) {
         return null;
       }
       return rootState.Regions.data.find(region => region.region_id === state.regionId);
@@ -21,7 +21,7 @@ export default {
       );
     },
     constellation(state, getters, rootState) {
-      if (state.constellationId) {
+      if (state.constellationId === null) {
         return null;
       }
       return rootState.Constellation.data.find(
@@ -34,11 +34,27 @@ export default {
       );
     },
     system(state, getters, rootState) {
-      if (state.systemId) {
+      if (state.systemId === null) {
         return null;
       }
-      return rootState.System.data.find(
+      return rootState.SolarSystem.data.find(
         system => system.system_id === state.systemId,
+      );
+    },
+    systemStations(state, getters, rootState) {
+      if (state.systemId === null) {
+        return null;
+      }
+      return rootState.Station.data.filter(
+        station => station.system_id === state.systemId,
+      );
+    },
+    station(state, getters, rootState) {
+      if (state.stationId === null) {
+        return null;
+      }
+      return rootState.Station.data.find(
+        station => station.station_id === state.stationId,
       );
     },
   },
@@ -114,6 +130,9 @@ export default {
       }, {
         root: true,
       });
+    },
+    async setStationId({ commit }, { stationId }) {
+      commit('SET_STATION', stationId);
     },
   },
 };
