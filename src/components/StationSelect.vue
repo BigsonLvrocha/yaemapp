@@ -27,6 +27,15 @@
         item-value="system_id"
       />
     </v-flex>
+    <v-flex v-if="systemId !== null">
+      <v-select
+        v-model="stationId"
+        :items="stationOptions"
+        label="Select Station"
+        item-text="name"
+        item-value="station_id"
+      />
+    </v-flex>
   </v-layout>
 </template>
 
@@ -39,6 +48,7 @@ export default {
       'region',
       'constellation',
       'system',
+      'station',
     ]),
     regionId: {
       get() {
@@ -70,6 +80,16 @@ export default {
         });
       },
     },
+    stationId: {
+      get() {
+        return this.$store.state.StationSelect.stationId;
+      },
+      set(stationId) {
+        this.$store.dispatch('StationSelect/setStationId', {
+          stationId,
+        });
+      },
+    },
     regionOptions() {
       return this.$store.state.Regions.data;
     },
@@ -78,6 +98,9 @@ export default {
     },
     systemOptions() {
       return this.$store.getters['StationSelect/constellationSystems'];
+    },
+    stationOptions() {
+      return this.$store.getters['StationSelect/systemStations'];
     },
   },
 };
