@@ -10,6 +10,7 @@
             @change="handleRegionSelect"
             item-value="region_id"
             item-text="name"
+            label="Select Region"
           />
         </v-flex>
         <v-flex>
@@ -56,6 +57,12 @@
             </v-expansion-panel>
           </v-expansion-panels>
         </v-flex>
+        <v-flex
+          v-if="currentRegionHistoryInfo !== null
+            && currentRegionHistoryInfo.types.length === 0"
+        >
+          No relevant items to show
+        </v-flex>
       </v-layout>
     </v-container>
   </v-content>
@@ -84,21 +91,27 @@ export default {
       fetched: 'fetched',
       fetchTotal: 'fetchTotal',
     }),
-    currentRegionHistoryData() {
+    currentRegionHistoryInfo() {
       if (this.currentRegion === null) {
-        return [];
+        return null;
       }
       const regionTypes = this.regionHistoryData
         .find(region => region.regionId === this.currentRegion);
       if (!regionTypes) {
+        return null;
+      }
+      return regionTypes;
+    },
+    currentRegionHistoryData() {
+      if (this.currentRegionHistoryInfo === null) {
         return [];
       }
-      return regionTypes.types.slice().sort(
+      return this.currentRegionHistoryInfo.types.slice().sort(
         (a, b) => b.hist30.averageIskVolume - a.hist30.averageIskVolume,
       );
     },
     currentRegionHistoryDataByAmount() {
-      if (this.currentRegion === null || this.currentRegionHistoryData.length === 0) {
+      if (this.currentRegionHistoryData.length === 0) {
         return [];
       }
       const sections = [];
@@ -125,15 +138,14 @@ export default {
       return sections;
     },
     currentRegionLastFetch() {
-      if (this.currentRegion === null) {
+      if (this.currentRegionHistoryInfo === null) {
         return null;
       }
-      const regionTypes = this.regionHistoryData
-        .find(region => region.regionId === this.currentRegion);
-      if (!regionTypes) {
-        return null;
-      }
-      return formatDistance(regionTypes.updatedAt, Date.now(), { addSuffix: true });
+      return formatDistance(
+        this.currentRegionHistoryInfo.updatedAt,
+        Date.now(),
+        { addSuffix: true },
+      );
     },
   },
   methods: {
