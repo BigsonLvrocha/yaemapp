@@ -14,6 +14,9 @@ export default new VuexPersist({
       data: state.Types.data,
       blacklist: state.Types.blacklist,
     },
+    Constellation: {
+      data: state.Constellation.data,
+    },
   }),
   filter: ({ type }) => {
     if (type.match(/IS_LOADING$/)) {
