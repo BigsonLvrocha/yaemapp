@@ -3,20 +3,12 @@ import Vuex from 'vuex';
 import { merge } from 'lodash';
 import EventBus from '@/components/EventBus';
 import Persistence from '@/plugins/VuexPersist';
-import Error from './store/Error';
-import Regions from './store/Regions';
-import RegionHistory from './store/RegionHistory';
-import Types from './store/Types';
+import modules from './store/index';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: {
-    Error,
-    Regions,
-    RegionHistory,
-    Types,
-  },
+  modules,
   state: {
     storeReady: false,
   },
