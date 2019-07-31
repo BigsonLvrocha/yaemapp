@@ -3,7 +3,7 @@ export default {
   state() {
     return {
       regionId: null,
-      constelationId: null,
+      constellationId: null,
       systemId: null,
       stationId: null,
     };
@@ -16,12 +16,12 @@ export default {
   mutations: {
     SET_REGION(state, regionId) {
       state.regionId = regionId;
-      state.constelationId = null;
+      state.constellationId = null;
       state.solarSystemId = null;
       state.stationId = null;
     },
-    SET_CONSTELATION(state, constelationId) {
-      state.constelationId = constelationId;
+    SET_CONSTELLATION(state, constellationId) {
+      state.constellationId = constellationId;
       state.solarSystemId = null;
       state.stationId = null;
     },
@@ -34,21 +34,25 @@ export default {
     },
     CLEAR(state) {
       state.regionId = null;
-      state.constelationId = null;
+      state.constellationId = null;
       state.solarSystemId = null;
       state.stationId = null;
     },
   },
   actions: {
     async setRegionId({ dispatch, commit, rootState }, { regionId }) {
-      const regionData = rootState.Region.data.find(item => item.region_id === regionId);
+      const regionData = rootState.Regions.data.find(region => region.region_id === regionId);
       if (!regionData) {
         const error = new Error('region not found');
         commit('ADD_ERROR', { error }, { root: true });
         throw error;
       }
       commit('SET_STATION', regionId);
-      dispatch('Contelation/fetchConstelationsData', { constelationsId: regionData.constelations });
+      dispatch('Constellation/fetchConstellationsData', {
+        constellationIds: regionData.constellations,
+      }, {
+        root: true,
+      });
     },
   },
 };

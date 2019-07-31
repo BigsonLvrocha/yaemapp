@@ -2,7 +2,7 @@ import Error from './Error';
 import Types from './Types';
 import Regions from './Regions';
 import RegionHistory from './RegionHistory';
-import Constelation from './Constelation';
+import Constellation from './Constellation';
 import StationSelect from './StationSelect';
 
 
@@ -11,6 +11,6 @@ export default {
   RegionHistory,
   Types,
   Regions,
-  Constelation,
+  Constellation,
   StationSelect,
 };
