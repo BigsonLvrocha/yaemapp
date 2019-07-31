@@ -9,6 +9,15 @@
         item-value="region_id"
       />
     </v-flex>
+    <v-flex v-if="regionId !== null">
+      <v-select
+        v-model="constellationId"
+        :items="constellationOptions"
+        label="Select Constellation"
+        item-text="name"
+        item-value="constellation_id"
+      />
+    </v-flex>
   </v-layout>
 </template>
 
@@ -19,6 +28,7 @@ export default {
   computed: {
     ...mapGetters('StationSelect', [
       'region',
+      'constellation',
     ]),
     regionId: {
       get() {
@@ -30,8 +40,21 @@ export default {
         });
       },
     },
+    constellationId: {
+      get() {
+        return this.$store.state.StationSelect.constellationId;
+      },
+      set(constellationId) {
+        this.$store.dispatch('StationSelect/setConstellationId', {
+          constellationId,
+        });
+      },
+    },
     regionOptions() {
       return this.$store.state.Regions.data;
+    },
+    constellationOptions() {
+      return this.$store.getters['StationSelect/regionConstellations'];
     },
   },
 };
