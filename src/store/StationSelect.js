@@ -12,6 +12,21 @@ export default {
     region(state, getters, rootState) {
       return rootState.Regions.data.find(region => region.region_id === state.regionId);
     },
+    regionConstellations(state, getters, rootState) {
+      return rootState.Constellation.data.filter(
+        constellation => constellation.region_id === state.regionId,
+      );
+    },
+    constellation(state, getters, rootState) {
+      return rootState.Constellation.data.find(
+        constellation => constellation.constellation_id === state.constellationId,
+      );
+    },
+    constellationSystems(state, getters, rootState) {
+      return rootState.SolarSystem.data.filter(
+        system => system.constellation_id === state.constellationId,
+      );
+    },
   },
   mutations: {
     SET_REGION(state, regionId) {
@@ -47,9 +62,25 @@ export default {
         commit('ADD_ERROR', { error }, { root: true });
         throw error;
       }
-      commit('SET_STATION', regionId);
+      commit('SET_REGION', regionId);
       dispatch('Constellation/fetchConstellationsData', {
         constellationIds: regionData.constellations,
+      }, {
+        root: true,
+      });
+    },
+    async setConstellationId({ dispatch, commit, rootState }, { constellationId }) {
+      const constellationData = rootState.Constellation.data.find(
+        constellation => constellation.constellation_id === constellationId,
+      );
+      if (!constellationData) {
+        const error = new Error('region not found');
+        commit('ADD_ERROR', { error }, { root: true });
+        throw error;
+      }
+      commit('SET_CONSTELLATION', constellationId);
+      dispatch('SolarSystem/fetchSystemsData', {
+        systemIds: constellationData.systems,
       }, {
         root: true,
       });
