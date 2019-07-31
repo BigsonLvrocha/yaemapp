@@ -20,6 +20,9 @@ export default new VuexPersist({
     SolarSystem: {
       data: state.SolarSystem.data,
     },
+    Station: {
+      data: state.Station.data,
+    },
   }),
   filter: ({ type }) => {
     if (type.match(/IS_LOADING$/)) {
