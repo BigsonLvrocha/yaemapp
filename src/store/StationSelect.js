@@ -10,6 +10,9 @@ export default {
   },
   getters: {
     region(state, getters, rootState) {
+      if (state.regionId) {
+        return null;
+      }
       return rootState.Regions.data.find(region => region.region_id === state.regionId);
     },
     regionConstellations(state, getters, rootState) {
@@ -18,6 +21,9 @@ export default {
       );
     },
     constellation(state, getters, rootState) {
+      if (state.constellationId) {
+        return null;
+      }
       return rootState.Constellation.data.find(
         constellation => constellation.constellation_id === state.constellationId,
       );
@@ -27,21 +33,29 @@ export default {
         system => system.constellation_id === state.constellationId,
       );
     },
+    system(state, getters, rootState) {
+      if (state.systemId) {
+        return null;
+      }
+      return rootState.System.data.find(
+        system => system.system_id === state.systemId,
+      );
+    },
   },
   mutations: {
     SET_REGION(state, regionId) {
       state.regionId = regionId;
       state.constellationId = null;
-      state.solarSystemId = null;
+      state.systemId = null;
       state.stationId = null;
     },
     SET_CONSTELLATION(state, constellationId) {
       state.constellationId = constellationId;
-      state.solarSystemId = null;
+      state.systemId = null;
       state.stationId = null;
     },
-    SET_SOLAR_SYSTEM(state, solarSystemId) {
-      state.solarSystemId = solarSystemId;
+    SET_SYSTEM(state, systemId) {
+      state.systemId = systemId;
       state.stationId = null;
     },
     SET_STATION(state, stationId) {
@@ -50,7 +64,7 @@ export default {
     CLEAR(state) {
       state.regionId = null;
       state.constellationId = null;
-      state.solarSystemId = null;
+      state.systemId = null;
       state.stationId = null;
     },
   },
@@ -81,6 +95,22 @@ export default {
       commit('SET_CONSTELLATION', constellationId);
       dispatch('SolarSystem/fetchSystemsData', {
         systemIds: constellationData.systems,
+      }, {
+        root: true,
+      });
+    },
+    async setSystemId({ dispatch, commit, rootState }, { systemId }) {
+      const systemData = rootState.SolarSystem.data.find(
+        system => system.system_id === systemId,
+      );
+      if (!systemData) {
+        const error = new Error('region not found');
+        commit('ADD_ERROR', { error }, { root: true });
+        throw error;
+      }
+      commit('SET_SYSTEM', systemId);
+      dispatch('Station/fetchStationsData', {
+        stationIds: systemData.stations,
       }, {
         root: true,
       });
