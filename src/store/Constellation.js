@@ -16,7 +16,6 @@ export default {
     ...AsyncMixin.Mutations,
     ADD_CONSTELLATION(state, constellation) {
       state.data.push(constellation);
-      state.data.sort((a, b) => a.constellation_id - b.constellation_id);
     },
   },
   actions: {
@@ -27,7 +26,7 @@ export default {
       }
       try {
         commit('SET_IS_LOADING');
-        const { data } = await api.get(`universe/constellation/${constellationId}`);
+        const { data } = await api.get(`universe/constellations/${constellationId}`);
         commit('ADD_CONSTELLATION', data);
         return data;
       } catch (error) {
