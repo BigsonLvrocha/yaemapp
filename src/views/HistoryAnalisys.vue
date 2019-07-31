@@ -1,16 +1,6 @@
 <template>
   <v-layout column>
-    <v-flex>
-      <v-select
-        v-model="currentRegion"
-        :items="regions"
-        :return-object="false"
-        @change="handleRegionSelect"
-        item-value="region_id"
-        item-text="name"
-        label="Select Region"
-      />
-    </v-flex>
+    <station-select />
     <v-flex>
       <v-btn
         v-if="currentRegion"
@@ -69,14 +59,13 @@
 import { mapState, mapActions } from 'vuex';
 import { formatDistance } from 'date-fns';
 import ItemHistoryDataView from '@/components/ItemHistoryDataView';
+import StationSelect from '@/components/StationSelect';
 
 export default {
   name: 'Home',
   components: {
     ItemHistoryDataView,
-  },
-  data() {
-    return { currentRegion: null };
+    StationSelect,
   },
   computed: {
     ...mapState('Regions', {
@@ -87,6 +76,9 @@ export default {
       fetched: 'fetched',
       fetchTotal: 'fetchTotal',
     }),
+    currentRegion() {
+      return this.$store.state.StationSelect.regionId;
+    },
     currentRegionHistoryInfo() {
       if (this.currentRegion === null) {
         return null;
