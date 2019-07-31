@@ -1,14 +1,28 @@
 <template>
   <v-app id="app">
-    <div id="nav">
-      <router-link to="/">
-        Home
-      </router-link> |
-      <router-link to="/historyAnalisys">
-        History Analisys
-      </router-link>
-    </div>
-    <router-view />
+    <v-app-bar app>
+      <v-toolbar-title>YAEMAPP</v-toolbar-title>
+      <v-toolbar-items class="mx-3">
+        <v-btn
+          text
+          to="/"
+        >
+          Home
+        </v-btn>
+        <v-btn
+          text
+          to="/historyAnalisys"
+        >
+          History Analisys
+        </v-btn>
+      </v-toolbar-items>
+      <v-spacer />
+    </v-app-bar>
+    <v-content>
+      <v-container fluid>
+        <router-view />
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
