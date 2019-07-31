@@ -5,7 +5,9 @@
       :key="type.typeId"
     >
       <v-list-item-title>
-        {{ typesInfo[index] === undefined ? 'Loading...' : typesInfo[index].name }}
+        {{ typesInfo[index] === undefined
+          ? 'Loading...'
+          : `${typesInfo[index].name} (${typesInfo[index].type_id})` }}
       </v-list-item-title>
     </v-list-item>
   </v-list>
