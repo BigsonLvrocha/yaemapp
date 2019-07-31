@@ -36,13 +36,13 @@ export default {
         commit('CLEAR_IS_LOADING');
       }
     },
-    async fetchSystemDataByIdArray({ dispatch, commit }, { systemIds }) {
+    async fetchSystemsData({ dispatch, commit }, { systemIds }) {
       try {
         commit('SET_IS_LOADING');
         const totalFetches = Math.floor((systemIds.length - 1) / 100) + 1;
         for (let i = 0; i < totalFetches; i += 1) {
           const roundTypes = systemIds.slice(i * 100, ((i + 1) * 100));
-          const requests = roundTypes.map(systemId => dispatch('fetchConstelationData', {
+          const requests = roundTypes.map(systemId => dispatch('fetchSystemData', {
             systemId,
           }));
           // eslint-disable-next-line no-await-in-loop
