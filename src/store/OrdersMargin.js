@@ -30,7 +30,7 @@ export default {
     REMOVE_IDS_LOADING(state, loading) {
       state.idsLoading = state.idsLoading.filter(item => loading.findIndex(a => a === item) === -1);
     },
-    CLEAR_MARGINS_TO_LOAD(state) {
+    CLEAR_DATA(state) {
       state.data = [];
       state.loading = [];
     },
@@ -108,8 +108,8 @@ export default {
         commit('REMOVE_IDS_LOADING', state.idsLoading);
       }
     },
-    async clearMarginsToLoad({ commit }) {
-      commit('CLEAR_MARGINS_TO_LOAD');
+    async clearData({ commit }) {
+      commit('CLEAR_DATA');
     },
     async addIdsLoading({ commit, state }, { typeIds }) {
       const newTypesIds = typeIds.filter(

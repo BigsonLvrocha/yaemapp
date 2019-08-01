@@ -98,7 +98,7 @@ export default {
       }, {
         root: true,
       });
-      dispatch('OrdersMargin/clearMarginsToLoad', null, { root: true });
+      dispatch('OrdersMargin/clearData', null, { root: true });
     },
     async setConstellationId({ dispatch, commit, rootState }, { constellationId }) {
       const constellationData = rootState.Constellation.data.find(
@@ -115,7 +115,7 @@ export default {
       }, {
         root: true,
       });
-      dispatch('OrdersMargin/clearMarginsToLoad', null, { root: true });
+      dispatch('OrdersMargin/clearData', null, { root: true });
     },
     async setSystemId({ dispatch, commit, rootState }, { systemId }) {
       const systemData = rootState.SolarSystem.data.find(
@@ -132,7 +132,7 @@ export default {
       }, {
         root: true,
       });
-      dispatch('OrdersMargin/clearMarginsToLoad', null, { root: true });
+      dispatch('OrdersMargin/clearData', null, { root: true });
     },
     async setStationId({ commit, dispatch, state }, { stationId }) {
       commit('SET_STATION', stationId);
