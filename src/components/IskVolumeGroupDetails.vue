@@ -10,7 +10,11 @@
     must-sort
   >
     <template #item.type.name="{ item, value }">
-      {{ value === undefined ? 'fetching...' : value }}
+      <v-progress-circular
+        v-if="value === undefined"
+        indeterminate
+      />
+      <span v-else>{{ value }}</span>
     </template>
     <template #item.hist30.averageIskVolume="{ item, value }">
       {{ (value / 1000000).toLocaleString('default', {
@@ -176,7 +180,7 @@ export default {
       'fetchTypeIdArrayData',
     ]),
     tablePaged(items) {
-      this.fetchTypeIdArrayData({ typeIds: items.map(item => item.typeId) });
+      return this.fetchTypeIdArrayData({ typeIds: items.map(item => item.typeId) });
     },
   },
 };
