@@ -45,6 +45,7 @@ export default {
         const responses = await Promise.all(ids.map(id => EsiService.get(`/universe/regions/${id}`)));
         const data = responses.map(item => item.data);
         commit('SET_DATA', { data });
+        commit('SAVE_STORE', null, { root: true });
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
         throw error;

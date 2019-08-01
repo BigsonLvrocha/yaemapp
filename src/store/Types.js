@@ -24,7 +24,7 @@ export default {
   },
   actions: {
     ...AsyncMixin.Actions,
-    async fetchTypeIdData({ commit, state }, { typeId }) {
+    async fetchTypeIdData({ commit, state }, { typeId, persist = false }) {
       const typeInState = state.data.find(item => item.type_id === typeId);
       if (typeInState !== undefined) {
         return typeInState;
@@ -42,6 +42,9 @@ export default {
         }
         return null;
       } finally {
+        if (persist) {
+          commit('SAVE_STORE', null, { root: true });
+        }
         commit('CLEAR_IS_LOADING');
       }
     },
@@ -56,10 +59,12 @@ export default {
           const roundTypes = typeIds.slice(i * 100, ((i + 1) * 100));
           const requests = roundTypes.map(typeId => dispatch('fetchTypeIdData', {
             typeId,
+            persist: false,
           }));
           // eslint-disable-next-line no-await-in-loop
           await Promise.all(requests);
         }
+        commit('SAVE_STORE', null, { root: true });
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
         throw error;

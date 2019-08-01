@@ -97,6 +97,7 @@ export default {
           regionTypesHistoryData.push(...results);
         }
         commit('SET_REGION_TYPES', { types: regionTypesHistoryData.filter(item => item !== null && item.hist7.averageIskVolume > 100000000), regionId });
+        commit('SAVE_STORE', null, { root: true });
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
         throw error;

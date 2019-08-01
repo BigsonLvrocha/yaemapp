@@ -19,7 +19,7 @@ export default {
     },
   },
   actions: {
-    async fetchConstellationData({ commit, state }, { constellationId }) {
+    async fetchConstellationData({ commit, state }, { constellationId, persist = true }) {
       const inData = state.data.find(a => a.constellation_id === constellationId);
       if (inData) {
         return inData;
@@ -28,6 +28,9 @@ export default {
         commit('SET_IS_LOADING');
         const { data } = await api.get(`universe/constellations/${constellationId}`);
         commit('ADD_CONSTELLATION', data);
+        if (persist) {
+          commit('SAVE_STORE', null, { root: true });
+        }
         return data;
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
@@ -44,10 +47,12 @@ export default {
           const roundTypes = constellationIds.slice(i * 100, ((i + 1) * 100));
           const requests = roundTypes.map(constellationId => dispatch('fetchConstellationData', {
             constellationId,
+            persist: false,
           }));
           // eslint-disable-next-line no-await-in-loop
           await Promise.all(requests);
         }
+        commit('SAVE_STORE', null, { root: true });
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
         throw error;

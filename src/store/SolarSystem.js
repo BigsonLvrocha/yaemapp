@@ -19,7 +19,7 @@ export default {
     },
   },
   actions: {
-    async fetchSystemData({ commit, state }, { systemId }) {
+    async fetchSystemData({ commit, state }, { systemId, persist = false }) {
       const inData = state.data.find(a => a.system_id === systemId);
       if (inData) {
         return inData;
@@ -28,6 +28,9 @@ export default {
         commit('SET_IS_LOADING');
         const { data } = await api.get(`universe/systems/${systemId}`);
         commit('ADD_SYSTEM', data);
+        if (persist) {
+          commit('SAVE_STORE', null, { root: true });
+        }
         return data;
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
@@ -44,10 +47,12 @@ export default {
           const roundTypes = systemIds.slice(i * 100, ((i + 1) * 100));
           const requests = roundTypes.map(systemId => dispatch('fetchSystemData', {
             systemId,
+            persist: false,
           }));
           // eslint-disable-next-line no-await-in-loop
           await Promise.all(requests);
         }
+        commit('SAVE_STORE', null, { root: true });
       } catch (error) {
         commit('ADD_ERROR', { error }, { root: true });
         throw error;

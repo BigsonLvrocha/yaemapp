@@ -24,6 +24,9 @@ export default new Vuex.Store({
         EventBus.$emit('storage-ready');
       }
     },
+    SAVE_STORE() {
+      // this should be called to save the store
+    },
   },
   actions: {
     async init({ dispatch }) {

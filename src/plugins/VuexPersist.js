@@ -24,12 +24,7 @@ export default new VuexPersist({
       data: state.Station.data,
     },
   }),
-  filter: ({ type }) => {
-    if (type.match(/IS_LOADING$/)) {
-      return false;
-    }
-    return true;
-  },
+  filter: ({ type }) => type === 'SAVE_STORE',
   asyncStorage: true,
   strictMode: true,
 });
