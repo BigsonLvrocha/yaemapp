@@ -66,6 +66,27 @@
         })
       }}
     </template>
+    <template #item.hist7.averagePriceVariation="{item, value}">
+      {{ value.toLocaleString('default', {
+        style: 'percent',
+        minimumSignificantDigits: 4,
+        maximumSignificantDigits: 4,
+      }) }}
+    </template>
+    <template #item.hist15.averagePriceVariation="{item, value}">
+      {{ value.toLocaleString('default', {
+        style: 'percent',
+        minimumSignificantDigits: 4,
+        maximumSignificantDigits: 4,
+      }) }}
+    </template>
+    <template #item.hist30.averagePriceVariation="{item, value}">
+      {{ value.toLocaleString('default', {
+        style: 'percent',
+        minimumSignificantDigits: 4,
+        maximumSignificantDigits: 4,
+      }) }}
+    </template>
   </v-data-table>
 </template>
 
@@ -89,32 +110,47 @@ export default {
         },
         {
           value: 'hist7.averageIskVolume',
-          text: 'Average Isk Volume (7 days)',
+          text: 'Avg. Isk Vol. (7 d)',
           sortable: true,
         },
         {
           value: 'hist7.averageVolume',
-          text: 'Average Volume (7 days)',
+          text: 'Avg. Vol. (7 d)',
+          sortable: true,
+        },
+        {
+          value: 'hist7.averagePriceVariation',
+          text: 'Avg. price var. (7 d)',
           sortable: true,
         },
         {
           value: 'hist15.averageIskVolume',
-          text: 'Average Isk Volume (15 days)',
+          text: 'Avg. Isk Vol. (15 d)',
           sortable: true,
         },
         {
           value: 'hist15.averageVolume',
-          text: 'Average Volume (15 days)',
+          text: 'Avg. Vol. (15 d)',
+          sortable: true,
+        },
+        {
+          value: 'hist15.averagePriceVariation',
+          text: 'Avg. price var. (15 d)',
           sortable: true,
         },
         {
           value: 'hist30.averageIskVolume',
-          text: 'Average Isk Volume (30 days)',
+          text: 'Avg. Isk Vol. (30 d)',
           sortable: true,
         },
         {
           value: 'hist30.averageVolume',
-          text: 'Average Volume (30 days)',
+          text: 'Avg. Vol. (30 d)',
+          sortable: true,
+        },
+        {
+          value: 'hist30.averagePriceVariation',
+          text: 'Avg. price var. (30 d)',
           sortable: true,
         },
       ],
