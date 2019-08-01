@@ -3,13 +3,14 @@
     :items="typesInfo"
     :headers="headers"
     :items-per-page="5"
+    @current-items="tablePaged"
     sort-by="hist30.averageIskVolume"
     sort-desc
     item-key="type_id"
     must-sort
   >
     <template #item.type.name="{ item, value }">
-      {{ value === undefined ? 'loading' : value }}
+      {{ value === undefined ? 'fetching...' : value }}
     </template>
     <template #item.hist30.averageIskVolume="{ item, value }">
       {{ (value / 1000000).toLocaleString('default', {
