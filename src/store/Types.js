@@ -8,6 +8,7 @@ export default {
       ...AsyncMixin.initState(),
       data: [],
       blacklist: [],
+      idsLoading: [],
     };
   },
   getters: {
@@ -20,6 +21,12 @@ export default {
     },
     ADD_BLACKLIST_TYPE_ID(state, { typeId }) {
       state.blacklist.push(typeId);
+    },
+    ADD_IDS_LOADING(state, loading) {
+      state.idsLoading.push(...loading);
+    },
+    REMOVE_IDS_LOADING(state, loading) {
+      state.idsLoading = state.idsLoading.filter(item => loading.findIndex(a => a === item) === -1);
     },
   },
   actions: {
@@ -48,9 +55,16 @@ export default {
         commit('CLEAR_IS_LOADING');
       }
     },
-    async fetchTypeIdArrayData({ commit, dispatch }, { typeIds }) {
+    async fetchTypeIdArrayData({ commit, dispatch, state }, { typeIds }) {
+      const newTypesIds = typeIds.filter(
+        typeId => state.idsLoading.findIndex(id => id === typeId) === -1,
+      );
+      if (newTypesIds.length === 0) {
+        return;
+      }
       try {
         commit('SET_IS_LOADING');
+        commit('ADD_IDS_LOADING', newTypesIds);
         if (typeIds.length === 0) {
           return;
         }
@@ -70,6 +84,7 @@ export default {
         throw error;
       } finally {
         commit('CLEAR_IS_LOADING');
+        commit('REMOVE_IDS_LOADING', newTypesIds);
       }
     },
   },
