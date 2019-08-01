@@ -13,7 +13,7 @@
           text
           to="/historyAnalisys"
         >
-          History Analisys
+          History Analysis
         </v-btn>
       </v-toolbar-items>
       <v-spacer />
