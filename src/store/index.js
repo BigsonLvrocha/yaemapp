@@ -6,6 +6,7 @@ import Constellation from './Constellation';
 import StationSelect from './StationSelect';
 import SolarSystem from './SolarSystem';
 import Station from './Station';
+import OrdersMargin from './OrdersMargin';
 
 
 export default {
@@ -17,4 +18,5 @@ export default {
   StationSelect,
   SolarSystem,
   Station,
+  OrdersMargin,
 };
